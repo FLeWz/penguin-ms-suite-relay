@@ -3,8 +3,10 @@ services:
     build: .
     restart: unless-stopped
     ports:
-      # Bind locally; put Caddy / Cloudflare Tunnel in front for TLS.
-      - "127.0.0.1:8090:8080"
+      # Same port inside and out. RELAY_BIND is the host address the port is published on:
+      # 127.0.0.1 for a proxy on this host, or the host's LAN / docker bridge address when the
+      # proxy runs in a container and forwards to <host address>:8090.
+      - "${RELAY_BIND:-127.0.0.1}:8090:8090"
     environment:
       RELAY_INVITE_SECRET: ${RELAY_INVITE_SECRET:-}
       RELAY_TRUST_PROXY: ${RELAY_TRUST_PROXY:-false}

@@ -9,7 +9,7 @@ COPY --from=build /relay /relay
 # Pre-owned dir so a fresh named volume is writable by the nonroot user.
 COPY --from=build --chown=65532:65532 /data /data
 VOLUME /data
-ENV RELAY_ADDR=:8080 RELAY_STATE_FILE=/data/devices.json
-EXPOSE 8080
+ENV RELAY_ADDR=:8090 RELAY_STATE_FILE=/data/devices.json
+EXPOSE 8090
 USER nonroot
 ENTRYPOINT ["/relay"]

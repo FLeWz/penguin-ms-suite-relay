@@ -33,7 +33,7 @@ func main() {
 	srv := newServer(st, invite, trust)
 
 	hs := &http.Server{
-		Addr:              env("RELAY_ADDR", ":8080"),
+		Addr:              env("RELAY_ADDR", ":8090"),
 		Handler:           srv.routes(),
 		ReadHeaderTimeout: 10 * time.Second,
 		ReadTimeout:       30 * time.Second, // does not affect hijacked WebSockets

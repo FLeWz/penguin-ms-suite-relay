@@ -13,15 +13,19 @@ JSON file keeps registered devices across restarts.
 
     RELAY_INVITE_SECRET=$(openssl rand -hex 16) docker compose up -d --build
 
-Listens on 127.0.0.1:8090. Put TLS in front (Caddy, or Cloudflare Tunnel) and
+Listens on port 8090 (published on `RELAY_BIND`, default 127.0.0.1). Put TLS in front (Nginx Proxy Manager, Caddy, or Cloudflare Tunnel) and
 set `RELAY_TRUST_PROXY=true` when behind it. Graph requires a public HTTPS
 `notificationUrl`.
 
 Local, no Docker: `go run .` with `RELAY_STATE_FILE=./devices.json`.
 
+Copy `.env.example` to `.env` and fill it in. The proxy terminates HTTPS and forwards to
+`http://<RELAY_BIND address>:8090` with WebSocket support on.
+
 ## Config (env)
 
-    RELAY_ADDR            listen address, default :8080
+    RELAY_ADDR            listen address, default :8090
+    RELAY_BIND            docker compose: host address port 8090 is published on, default 127.0.0.1
     RELAY_STATE_FILE      device store, default /data/devices.json
     RELAY_INVITE_SECRET   required Bearer token for POST /register; empty = open (warned)
     RELAY_TRUST_PROXY     true: client IP = rightmost X-Forwarded-For (for rate limits)
